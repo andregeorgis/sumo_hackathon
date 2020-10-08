@@ -19,7 +19,7 @@ EMOTION_FREQUENCY_THRESHHOLD = 2
 #Called whenever the average emotion changes to anything other than neutral
 def onEmotionChanged(emotion):
     print("Emotion changed to: " + emotion)
-    cv2.imshow('image', cv2.resize(images[current_emotion],(250,150),interpolation = cv2.INTER_CUBIC))
+    cv2.imshow('image', cv2.resize(images[current_emotion],(200,200),interpolation = cv2.INTER_CUBIC))
 
 #Adds to the history of the last EMOTION_HISTORY_LENGTH emotions
 #calls OnEmotionChanged if a specific emotion (which isn't Neutral) appears in the history more than EMOTION_FREQUENCY_THRESHHOLD times
