@@ -11,8 +11,16 @@ counter = 0
 # start the webcam feed
 cap = cv2.VideoCapture(0)
 while True:
-    fps = counter / (time.time() - start_time)
-    print(fps)
-    counter += 1
     # Find haar cascade to draw bounding box around face
     ret, frame = cap.read()
+    counter += 1
+
+    if time.time() - start_time > 1:
+        start_time = time.time()
+        print(counter)
+        counter = 0
+
+
+    cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
