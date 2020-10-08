@@ -111,6 +111,7 @@ elif mode == "display":
     # start the webcam feed
     cap = cv2.VideoCapture(0)
     while True:
+        print("hi")
         # Find haar cascade to draw bounding box around face
         ret, frame = cap.read()
         if not ret:
