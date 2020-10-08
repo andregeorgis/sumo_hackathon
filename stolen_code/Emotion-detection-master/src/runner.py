@@ -13,10 +13,10 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 current_emotion = "Neutral"
 emotion_history = []
-EMOTION_HISTORY_LENGTH = 15
-EMOTION_FREQUENCY_THRESHHOLD = 12
+EMOTION_HISTORY_LENGTH = 4
+EMOTION_FREQUENCY_THRESHHOLD = 2
 
-#Called whenever the average emotion changes to anything other than neutral 
+#Called whenever the average emotion changes to anything other than neutral
 def onEmotionChanged(emotion):
     print("Emotion changed to: " + emotion)
 
@@ -29,7 +29,7 @@ def updateEmotion(emotion):
 
     if len(emotion_history) >= EMOTION_HISTORY_LENGTH:
         emotion_history.pop(0)
-        
+
     emotion_history.append(emotion)
     mostFrequentEmotion = max(set(emotion_history), key = emotion_history.count)
     frequency = emotion_history.count(mostFrequentEmotion)
@@ -43,7 +43,7 @@ def calcFaceArea(face):
     (x, y, width, height) = face
     return width * height
 
-#Considered certain when 5 out of 6 of the outputs are all exactly zero. 
+#Considered certain when 5 out of 6 of the outputs are all exactly zero.
 #Note: If it is uncertain, at least one of the outputs will be about 5x10e-30, but the highest output will still be exactly one
 def isCertain(predictionList):
     count = 0
@@ -80,6 +80,11 @@ cv2.ocl.setUseOpenCL(False)
 
 # dictionary which assigns each label an emotion (alphabetical order)
 emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
+
+images = {}
+for emotion in ["Angry", "Happy", "Neutral", "Sad", "Surprised"]:
+    images[emotion] = cv2.imread("img/" + emotion + ".png", cv2.IMREAD_COLOR)
+
 
 # start the webcam feed
 cap = cv2.VideoCapture(0)
@@ -129,10 +134,10 @@ while True:
 
     #draw image to screen
     cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
+    cv2.imshow('image', images[current_emotion])
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 cap.release()
 cv2.destroyAllWindows()
-
