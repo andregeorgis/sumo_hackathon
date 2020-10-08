@@ -9,6 +9,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
+import time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # command line argument
@@ -108,10 +109,19 @@ elif mode == "display":
     # dictionary which assigns each label an emotion (alphabetical order)
     emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
+    counter = 0
+    start_time = time.time()
+
     # start the webcam feed
     cap = cv2.VideoCapture(0)
     while True:
-        print("hi")
+        counter += 1
+
+        if time.time() - start_time > 1:
+            print(counter)
+            start_time = time.time()
+            counter = 0
+            
         # Find haar cascade to draw bounding box around face
         ret, frame = cap.read()
         if not ret:
