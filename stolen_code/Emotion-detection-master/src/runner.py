@@ -19,6 +19,7 @@ EMOTION_FREQUENCY_THRESHHOLD = 2
 #Called whenever the average emotion changes to anything other than neutral
 def onEmotionChanged(emotion):
     print("Emotion changed to: " + emotion)
+    cv2.imshow('image', images[current_emotion])
 
 #Adds to the history of the last EMOTION_HISTORY_LENGTH emotions
 #calls OnEmotionChanged if a specific emotion (which isn't Neutral) appears in the history more than EMOTION_FREQUENCY_THRESHHOLD times
@@ -36,8 +37,7 @@ def updateEmotion(emotion):
 
     if frequency >= EMOTION_FREQUENCY_THRESHHOLD and mostFrequentEmotion != current_emotion:
         current_emotion = mostFrequentEmotion
-        if current_emotion != "Neutral":
-            onEmotionChanged(mostFrequentEmotion)
+        onEmotionChanged(mostFrequentEmotion)
 
 def calcFaceArea(face):
     (x, y, width, height) = face
@@ -85,6 +85,7 @@ images = {}
 for emotion in ["Angry", "Happy", "Neutral", "Sad", "Surprised"]:
     images[emotion] = cv2.imread("img/" + emotion + ".png", cv2.IMREAD_COLOR)
 
+print("hello 1")
 
 # start the webcam feed
 cap = cv2.VideoCapture(0)
@@ -134,7 +135,6 @@ while True:
 
     #draw image to screen
     cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
-    cv2.imshow('image', images[current_emotion])
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
